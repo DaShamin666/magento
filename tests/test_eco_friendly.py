@@ -1,17 +1,14 @@
 import allure
-from pages.eco_friendly import EcoFriendlyPage
+from base.base_test import BaseTest
 
 
-class TestChoiseShmot:
-    def setup_method(self):
-        self.eco_friendly = EcoFriendlyPage(self.driver)
-
+class TestChoiseShmot(BaseTest):
 
     @allure.title("Выбираем")
     def test_shopping(self):
         self.eco_friendly.open()
         self.eco_friendly.click_next()
-        self.eco_friendly.click_choose()
-        self.eco_friendly.click_choose_size()
-        self.eco_friendly.click_choose_color()
+        self.eco_friendly.acction_choose()
+        self.eco_friendly.click_choose_size_xl()
+        self.eco_friendly.click_choose_color_purple()
         self.eco_friendly.click_compair()

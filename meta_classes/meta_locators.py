@@ -7,6 +7,6 @@ class MetaLocator(type):
             if isinstance(value, str):
                 if value.startswith("//") or value.startswith(".//") or value.startswith("(//"):
                     attrs[key] = ("xpath", value)
-                elif value.startswith(".") or value.startswith("#"):
+                elif value.startswith(".") or value.startswith("#") or ":" in value:
                     attrs[key] = ("css selector", value)
         return type.__new__(cls, name, bases, attrs)

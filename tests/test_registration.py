@@ -1,10 +1,9 @@
 import allure
-from pages.regisration import RegistrationPage
+from base.base_test import BaseTest
 
 
-class TestRegistration:
-    def setup_method(self):
-        self.registration = RegistrationPage(self.driver)
+class TestRegistration(BaseTest):
+
 
 
     @allure.title("Регистрируемся")
