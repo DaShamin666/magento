@@ -1,5 +1,4 @@
 from base.base_page import BasePage
-import allure
 
 
 class RegistrationPage(BasePage):
@@ -12,47 +11,44 @@ class RegistrationPage(BasePage):
     _CONFIRM_PASSWORD = "//input[@id='password-confirmation' and contains(@class, 'input-text')]"
     _BUTTON_CONFIRM = ("//button[contains(@class, 'action submit primary')"
                        " and @title='Create an Account']")
+    _TEXT_SUCSSES_CREATE_ACCOUNT = ("//div[contains(text(),"
+                                    " 'Thank you for registering with Main Website Store.')]")
+    _PASSWORD_STRENGHTH_WEAK = "//div[@id='password-strength-meter' and contains(., 'Weak')]"
+    _ENTER_VALUE_AGAIN = ("//div[@id='password-confirmation-error' and contains(text(), "
+                          "'Please enter the same value again.')]")
 
 
-    @allure.step("Вводим имя")
+
     def input_firstname(self, firstname):
-        firstname_field = self.driver.find_element(*self._FIRST_NAME)
-        assert firstname_field.is_displayed(), "Поле для ввода имени не отображается"
-        firstname_field.send_keys(firstname)
+        self.input_text(*self._FIRST_NAME, firstname)
 
 
-    @allure.step("Вводим фамилию")
     def input_lastname(self, lastname):
-        lastname_field = self.driver.find_element(*self._LAST_NAME)
-        assert lastname_field.is_displayed(), "Поле для ввода фамилии не отображается"
-        lastname_field.send_keys(lastname)
+        self.input_text(*self._LAST_NAME, lastname)
 
 
-    @allure.step("Вводим почту")
     def input_email(self, email):
-        email_field = self.driver.find_element(*self._EMAIL)
-        assert email_field.is_displayed(), "Поле для ввода почты не отображается"
-        email_field.send_keys(email)
+        self.input_text(*self._EMAIL, email)
 
 
-    @allure.step("Вводим пароль")
     def input_password(self, password):
-        password_field = self.driver.find_element(*self._PASSWORD)
-        assert password_field.is_displayed(), "Поле для ввода пароля не отображается"
-        password_field.send_keys(password)
+        self.input_text(*self._PASSWORD, password)
 
 
-    @allure.step("Вводим пароль повторно")
     def input_confirm_password(self, confirm_password):
-        confirm_password_field = self.driver.find_element(*self._CONFIRM_PASSWORD)
-        assert confirm_password_field.is_displayed(), "Поле для повторного ввода пароля не отображается"
-        confirm_password_field.send_keys(confirm_password)
+        self.input_text(*self._CONFIRM_PASSWORD, confirm_password)
 
 
-    @allure.step("Нажимаем кнопку")
     def click_button_confirm(self):
-        confirm_button = self.driver.find_element(*self._BUTTON_CONFIRM)
-        assert confirm_button.is_displayed(), "Кнопка подтверждения не отображается"
-        assert confirm_button.is_enabled(), "Кнопка подтверждения недоступна для нажатия"
-        confirm_button.click()
+        self.click_element(*self._BUTTON_CONFIRM)
+
+    def text_sucsses_create(self):
+        return self.find_element(*self._TEXT_SUCSSES_CREATE_ACCOUNT).text
+
+    def password_strength_weak(self):
+        return self.find_element(*self._PASSWORD_STRENGHTH_WEAK).text
+
+    def enter_value_again(self):
+        return self.find_element(*self._ENTER_VALUE_AGAIN).text
+
 

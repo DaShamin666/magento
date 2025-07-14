@@ -1,8 +1,4 @@
 from base.base_page import BasePage
-import allure
-from selenium.webdriver.common.action_chains import ActionChains
-import allure
-
 
 
 
@@ -15,38 +11,44 @@ class EcoFriendlyPage(BasePage):
     _CHOISE_COLOR = ("//div[@class='swatch-option color selected'"
                      " and @option-id='57' and @aria-checked='true']")
     _CLICK_TO_COMPAIR = "//a[span[text()='Add to Compare']]"
+    _ITEM_LIST = "//strong[@id='block-compare-heading' and text()='Compare Products']"
+    _ITEM_COUNT = "//span[@class='counter qty' and text()='1 item']"
+    _CLICK_CLEAR_COMPAIR ="//a[@id='compare-clear-all' and contains(span/text(), 'Clear All')]"
+    _CLICK_ADD_TO_CART = "//button[@title='Add to Cart' and contains(@class, 'action tocart primary') and span[text()='Add to Cart']]"
+    _CART = "//span[@class='counter qty' and span[@class='counter-number' and text()]]"
 
-    @allure.step("нажать кнопку далее")
     def click_next(self):
-        click_button = self.driver.find_element(*self._BUTTON_NEXT)
-        assert click_button.is_displayed(), "Кнопка 'Далее' не отображается"
-        click_button.click()
+        self.click_element(*self._BUTTON_NEXT)
 
 
-    @allure.step("выбор одежды")
     def acction_choose(self):
-        action_element = self.driver.find_element(*self._CHOISE_SHMOT)
-        assert action_element.is_displayed(), "Элемент одежды не отображается"
-        actions = ActionChains(self.driver)
-        actions.move_to_element(action_element).perform()
+        action_element = self.action_choose(*self._CHOISE_SHMOT)
+        assert action_element.is_displayed()
 
 
-    @allure.step("выбор размера")
+
     def click_choose_size_xl(self):
-        choose_size_button = self.driver.find_element(*self._CHOISE_SIZE)
-        assert choose_size_button.is_displayed(), "Кнопка выбора размера не отображается"
-        choose_size_button.click()
+        self.click_element(*self._CHOISE_SIZE)
 
 
-    @allure.step("выбор цвета")
     def click_choose_color_purple(self):
-        choose_color_button = self.driver.find_element(*self._CHOISE_COLOR)
-        assert choose_color_button.is_displayed(), "Кнопка выбора цвета не отображается"
-        choose_color_button.click()
+        self.click_element(*self._CHOISE_COLOR)
 
 
-    @allure.step("добавляем товар")
     def click_compair(self):
-        compair_button = self.driver.find_element(*self._CLICK_TO_COMPAIR)
-        assert compair_button.is_displayed(), "Кнопка 'Добавить к сравнению' не отображается"
-        compair_button.click()
+        self.click_element(*self._CLICK_TO_COMPAIR)
+
+    def item_list(self):
+        items = self.find_element(*self._ITEM_LIST)
+        items_count = len(items.find_elements(*self._ITEM_COUNT))
+        return items_count
+
+    def click_clear_compair(self):
+        self.click_element(*self._CLICK_CLEAR_COMPAIR)
+        self.allert_confirm()
+
+    def click_add_to_cart(self):
+        self.click_element(*self._CLICK_ADD_TO_CART)
+
+    def cart_changed(self):
+        return self.find_element(*self._CART).text
